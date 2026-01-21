@@ -1,21 +1,16 @@
-# Materialism Dev Theme
+# Materialism: Dev Channel (Beta)
 
-A specialized, text-first version of Materialism designed for developers and tech journals.
+**Status:** Experimental / Unstable
+**Base:** Materialism OG v1.0.0
 
-## ⚡ Design Philosophy
-- **Minimalist**: Strip away distractions. No hero images, no bulky cards.
-- **Text-Centric**: Primary focus on content legibility and typography.
-- **Monospace Aesthetics**: Uses `JetBrains Mono` for headers, meta info, and navigation to evoke a code editor feel.
-- **Performance**: Extremely lightweight with minimal image loading constraints.
+This is a **development snapshot**. Use at your own risk.
 
-## 🛠 Features
-- **Git-Log Style Layout**: Posts are displayed as a clean, chronological list.
-- **Code-Friendly Typography**: Optimized for reading technical content.
-- **Single Column**: Narrower reading width (800px) for better focus.
-- **Threaded Comments**: Retained full functionality but styled to look cleaner.
+## 📝 Changelog
+
+- **Thumbnail Fixed:** Resolved issues with post thumbnails not displaying correctly.
+- **Lightbox Image:** Added lightbox (popup preview) functionality for post images.
 
 ## 📦 Installation
-Upload `dev.xml` to your Blogger theme settings.
-
----
-*Based on Materialism OG v1.0.0*
+1. Go to **Theme** > **Edit HTML**.
+2. Copy all theme from `dev.xml`, and Save.
+> **Note:** Backup your current theme before applying this update.
