@@ -18,7 +18,7 @@
     <b:if cond='data:view.isSingleItem'>
         <meta expr:content='data:post.author' name='author'/>
     <b:else/>
-        <meta content='Your Name' name='author'/>
+        <meta content='Wahib Irawan' name='author'/>
     </b:if>
     
     <!-- Page Title -->
@@ -53,15 +53,15 @@
             <meta expr:content='data:blog.metaDescription.escaped' property='og:description'/>
         <b:else/>
             <!-- Fallback if user hasn't set Search Description in Settings -->
-            <meta content='A personal blog sharing thoughts, ideas, and stories about technology, lifestyle, and everyday life.' name='description'/>
-            <meta content='A personal blog sharing thoughts, ideas, and stories about technology, lifestyle, and everyday life.' property='og:description'/>
+            <meta content='Blog yang berisi refleksi ringan, ide acak, dan ulasan seputar teknologi, gaya hidup, serta cerita sehari-hari.' name='description'/>
+            <meta content='Blog yang berisi refleksi ringan, ide acak, dan ulasan seputar teknologi, gaya hidup, serta cerita sehari-hari.' property='og:description'/>
         </b:if>
         <meta expr:content='data:blog.title' property='og:title'/>
         <meta expr:content='data:blog.canonicalHomepageUrl' property='og:url'/>
         <meta content='website' property='og:type'/>
     </b:if>
     <!-- Twitter Card / X Meta Tags -->
-    <meta content='@your_twitter_handle' name='twitter:site'/>
+    <meta content='@progressiveblur' name='twitter:site'/>
     <b:if cond='data:view.isSingleItem'>
         <meta content='summary_large_image' name='twitter:card'/>
         <meta expr:content='data:blog.pageName' name='twitter:title'/>
@@ -85,36 +85,9 @@
     </b:if>
     
 
+    <!-- WebSite Schema (Homepage/Archive) -->
+    <b:if cond='!data:view.isPost'>
     <script type='application/ld+json'>
-    <b:if cond='data:view.isSingleItem'>
-      {
-        &quot;@context&quot;: &quot;https://schema.org&quot;,
-        &quot;@type&quot;: &quot;BlogPosting&quot;,
-        &quot;mainEntityOfPage&quot;: {
-          &quot;@type&quot;: &quot;WebPage&quot;,
-          &quot;@id&quot;: &quot;<data:view.url.canonical/>&quot;
-        },
-        &quot;headline&quot;: &quot;<data:view.title.escaped/>&quot;,
-        &quot;description&quot;: &quot;<b:if cond='data:view.description'><data:view.description.escaped/><b:else/><data:blog.pageName/></b:if>&quot;,
-        &quot;image&quot;: [
-          &quot;<b:if cond='data:view.featuredImage'><data:view.featuredImage/><b:else/>https://via.placeholder.com/1200x675</b:if>&quot;
-        ],  
-        &quot;author&quot;: {
-          &quot;@type&quot;: &quot;Person&quot;,
-          &quot;name&quot;: &quot;<data:post.author/>&quot;
-        },  
-        &quot;publisher&quot;: {
-          &quot;@type&quot;: &quot;Organization&quot;,
-          &quot;name&quot;: &quot;<data:blog.title/>&quot;,
-          &quot;logo&quot;: {
-            &quot;@type&quot;: &quot;ImageObject&quot;,
-            &quot;url&quot;: &quot;https://lh3.googleusercontent.com/ULB6iJ9rFiMentxnmCZlA98YtpqGIv-sQ_Agcf7_yvC0=s400&quot;
-          }
-        },
-        &quot;datePublished&quot;: &quot;<data:post.timestampISO8601/>&quot;,
-        &quot;dateModified&quot;: &quot;<data:post.lastUpdatedISO8601/>&quot;
-      }
-    <b:else/>
       {
         &quot;@context&quot;: &quot;https://schema.org&quot;,
         &quot;@type&quot;: &quot;WebSite&quot;,
@@ -126,8 +99,10 @@
           &quot;query-input&quot;: &quot;required name=search_term_string&quot;
         }
       }
-    </b:if>
     </script>
+    </b:if>
+    
+
 
     <link href='https://fonts.googleapis.com' rel='preconnect'/>
     <link crossorigin='' href='https://fonts.gstatic.com' rel='preconnect'/>
@@ -135,56 +110,69 @@
     <link href='https://blogger.googleusercontent.com' rel='preconnect'/>
     <link href='https://lh3.googleusercontent.com' rel='preconnect'/>
     <!-- Non-blocking font load -->
-    <link href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap' media='print' onload='this.media=&quot;all&quot;' rel='stylesheet'/>
-    <noscript><link href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap' rel='stylesheet'/></noscript>
+    <link href='https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap' media='print' onload='this.media=&quot;all&quot;' rel='stylesheet'/>
+    <noscript><link href='https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap' rel='stylesheet'/></noscript>
 
-    <!-- Remove ?m=1 mobile parameter (not needed for responsive themes) -->
-    <b:if cond='data:blog.isMobile'>
+    <!-- STRICT: Remove ?m=1 mobile parameter everywhere (not needed for responsive themes) -->
     <script>
+    //<![CDATA[
     (function() {
+        // 1. On page load: clean URL without reload (replaceState only changes URL bar)
         var url = window.location.href;
-        if (url.indexOf(&#39;m=1&#39;) !== -1) {
-            var cleanUrl = url.replace(/[?&amp;]m=1/g, &#39;&#39;).replace(/\?$/, &#39;&#39;).replace(/&amp;$/, &#39;&#39;).replace(/\?&amp;/, &#39;?&#39;);
-            if (cleanUrl !== url) history.replaceState(null, &#39;&#39;, cleanUrl);
+        if (url.indexOf('m=1') !== -1) {
+            var cleanUrl = url.replace(/[?&]m=1/g, '').replace(/\?$/, '').replace(/&$/, '').replace(/\?&/, '?');
+            if (cleanUrl !== url) {
+                history.replaceState(null, '', cleanUrl);
+            }
         }
+        
+        // 2. Intercept link clicks to strip m=1 - but skip links handled by AJAX
+        document.addEventListener('click', function(e) {
+            var link = e.target.closest('a[href]');
+            if (!link) return;
+            
+            var href = link.getAttribute('href');
+            if (!href || href.indexOf('m=1') === -1) return;
+            
+            // Skip label links and homepage - these are handled by AJAX pagination script
+            if (href.indexOf('/search/label/') !== -1 || href === '/' || href === window.location.origin + '/') {
+                // Just clean the href attribute, don't navigate (AJAX will handle it)
+                link.setAttribute('href', href.replace(/[?&]m=1/g, '').replace(/\?$/, '').replace(/&$/, '').replace(/\?&/, '?'));
+                return;
+            }
+            
+            // For other links, prevent and redirect clean
+            e.preventDefault();
+            var cleanHref = href.replace(/[?&]m=1/g, '').replace(/\?$/, '').replace(/&$/, '').replace(/\?&/, '?');
+            window.location.href = cleanHref;
+        });
     })();
+    //]]>
     </script>
-    </b:if>
 
     <b:skin><![CDATA[
-    /* -------------------------------------------
-    Open Source Blogger Template
-    Name:     Materialism Non SSR
-    Version:  1.0.0
-    Designer: Wahib Irawan / www.wahib.web.id
-    License:  MIT License
-    ------------------------------------------- */
     :root {
-        --font-base: 'Inter', -apple-system, sans-serif;
-        --font-mono: 'JetBrains Mono', monospace;
-        --color-bg: #ffffff;
-        --color-text: #0d1117;
-        --color-meta: #57606a;
-        --color-accent: #0969da;
-        --color-accent-bg: #ddf4ff;
-        --color-border: #d0d7de;
-        --radius-l: 6px;
-        --radius-m: 6px;
-        --radius-s: 4px;
-        --shadow-1: none;
-        --shadow-2: 0 1px 3px rgba(0,0,0,0.08);
-        --width-max: 800px;
-        --header-height: 64px;
+        --font-base: 'Geist', -apple-system, sans-serif;
+        --color-bg: #FFFFFF;
+        --color-text: #212121;
+        --color-meta: #5F6368;
+        --color-accent: #1A73E8;
+        --color-accent-bg: #E8F0FE;
+        --radius-l: 24px;
+        --radius-m: 16px;
+        --radius-s: 8px;
+        --shadow-1: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        --shadow-2: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+        --width-max: 1240px;
+        --header-height: 72px;
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: var(--font-base); background: var(--color-bg); color: var(--color-text); line-height: 1.6; font-size: 100%; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
-    h1, h2, h3, h4, h5, h6, .card-meta, .sp-meta, .read-more-pill, .nav-link, .btn, .hero-label { font-family: var(--font-mono); }
+    body { font-family: var(--font-base); background: var(--color-bg); color: var(--color-text); line-height: 1.6; font-size: 100%; -webkit-font-smoothing: antialiased; }
     ul, ol { list-style: none; } /* Global Reset */
-    a { text-decoration: none; color: inherit; transition: color 0.1s; }
-    p a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
-    p a:hover { text-decoration: none; background: var(--color-accent-bg); }
-    button, input, textarea, select { font-family: var(--font-mono); } /* Force font inheritance */
+    a { text-decoration: none; color: inherit; transition: color 0.2s; }
+    p a:hover { color: var(--color-accent); }
+    button, input, textarea, select { font-family: inherit; } /* Force font inheritance */
     img { max-width: 100%; height: auto; display: block; }
 
 
@@ -208,8 +196,8 @@
     
     /* Left Group */
     .header-left { display: flex; align-items: center; }
-    .brand-link { display: flex; align-items: center; gap: 8px; font-weight: 700; font-family: var(--font-mono); font-size: 1.1rem; color: var(--color-text); z-index: 1001; }
-    .brand-link span { color: var(--color-accent); }
+    .brand-link { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 1.25rem; color: #5F6368; z-index: 1001; }
+    .brand-link span { color: #202124; letter-spacing: -0.5px; }
 
     /* Right Group */
     .header-right { display: flex; align-items: center; gap: 32px; }
@@ -310,7 +298,7 @@
     .mobile-search-btn { display: none; cursor: pointer; color: #5F6368; } /* Removed margin-right to rely on gap */
 
 
-    .container { max-width: var(--width-max); margin: 0 auto; padding: 48px 24px; flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; }
+    .container { max-width: var(--width-max); margin: 0 auto; padding: 48px 24px; }
     .layout-wrapper { display: flex; gap: 64px; }
     .main-area { flex: 1; max-width: 100%; }
     /* Check sidebar presence */
@@ -327,8 +315,8 @@
         content: ''; flex: 1; height: 1px; background: #e0e0e0; opacity: 0.6; margin-top: 4px;
     }
 
-    /* --- HERO SECTION (Featured Post) - REMOVED FOR DEV THEME --- */
-    .hero-section { display: none; }
+    /* --- HERO SECTION (Featured Post) --- */
+    .hero-section { margin-bottom: 64px; }
     .hero-card {
         display: flex; gap: 48px; align-items: center;
         background: #fff; border-radius: 32px;
@@ -393,52 +381,74 @@
         .hero-btn { width: 100%; justify-content: center; }
     }
 
-    /* 1-Column List for Dev Theme */
-    .posts-grid { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--color-border); }
+    /* 3-Column Grid */
+    .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
     
     .post-card { 
-        display: flex; flex-direction: row; align-items: baseline; position: relative; group: true; 
-        border-bottom: 1px solid var(--color-border); border-radius: 0; padding: 24px 0; 
-        transition: background 0.1s ease; background: transparent; border-width: 0 0 1px 0;
+        display: flex; flex-direction: column; height: 100%; position: relative; group: true; 
+        border: 1px solid var(--color-border); border-radius: 24px; padding: 16px; 
+        transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); background: #fff;
     }
-    .post-card:hover { border-color: var(--color-border); box-shadow: none; background: #f6f8fa; transform: none; }
+    .post-card:hover { border-color: transparent; box-shadow: var(--shadow-2); transform: translateY(-2px); }
 
-    .card-media { display: none; } /* No images in list */
+    .card-media {
+        aspect-ratio: 16/9;
+        background: #F1F3F4;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        position: relative;
+    }
+    /* Hover scale removed from image, moved to card lift */
+    .card-media img { width: 100%; height: 100%; object-fit: cover; }
     
     /* Smooth fadeIn animation for post cards */
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .post-card { animation: fadeInUp 0.3s ease-out; }
     
     /* Content-visibility for below-fold cards (saves rendering cost) */
-    .post-card:nth-child(n+4) { content-visibility: auto; contain-intrinsic-size: 100px; }
+    .post-card:nth-child(n+4) { content-visibility: auto; contain-intrinsic-size: 400px; }
     
-    /* Card Meta - Date on Left */
+    /* Card Meta - Typography restored to wrapper for unlinked text */
     .card-meta { 
-        font-size: 0.85rem; font-weight: 400; color: var(--color-meta); 
-        text-transform: none; letter-spacing: 0; flex-shrink: 0; width: 120px;
-        display: block; margin-bottom: 0; padding-top: 4px;
-        font-family: var(--font-mono);
+        font-size: 0.75rem; font-weight: 700; color: #1967D2; 
+        text-transform: uppercase; letter-spacing: 0.5px;
+        display: flex; align-items: center; 
+        margin-bottom: 8px; 
     }
-    /* Hide unneeded meta parts */
-    .card-meta a { display: none; } 
-    .card-meta span { display: inline-block; }
-
-    .card-content-wrap { flex: 1; }
-
+    
+    /* Touch Target: 48px height but visually compressed with negative margins */
+    .card-meta a { 
+        text-decoration: none; color: inherit;
+        display: inline-flex; align-items: center;
+        min-height: 48px; 
+        margin: -14px 0; /* Compensate 48px height to keep visual density */
+    }
     .card-title { 
-        font-size: 1.1rem; font-weight: 600; line-height: 1.4; color: var(--color-text); margin-bottom: 4px; letter-spacing: 0;
-        display: block; font-family: var(--font-base);
-        text-decoration: none;
+        font-size: 1.375rem; font-weight: 700; line-height: 1.3; color: #202124; margin-bottom: 8px; letter-spacing: -0.5px;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
-    .card-title:hover { color: var(--color-accent); text-decoration: underline; }
-
+    .card-title:hover {color: #434448;}
+    .card-date { font-size: 0.875rem; color: #5F6368; display: block; margin-bottom: 8px; }
     .card-snippet {
-        font-size: 0.95rem; color: var(--color-meta); line-height: 1.5; margin-bottom: 0;
-        display: block; -webkit-line-clamp: 2;
+        font-size: 0.9375rem; color: #5F6368; line-height: 1.6; margin-bottom: 24px;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
 
-    /* Read More Pill - Removed */
-    .read-more-pill { display: none; }
+    /* Read More Pill */
+    .read-more-pill {
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 0.875rem; font-weight: 600; color: #1967D2;
+        background: #E8F0FE; border: none;
+        padding: 10px 24px; border-radius: 99px; width: fit-content;
+        margin-top: auto;
+        transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+    .read-more-pill:hover { 
+        background: #D2E3FC; 
+        color: #174EA6;
+        box-shadow: 0 1px 2px rgba(60,64,67,0.3);
+    }
 
     /* --- SINGLE POST TYPOGRAPHY --- */
     /* H1: 28-34px (Approx 2rem) */
@@ -699,22 +709,8 @@
     }
 
     /* 5. REPLIES & THREADING */
-    .comment-replies {
-        display: block;
-        position: relative;
-        margin-top: 24px;
-    }
-    
-    /* Tree Line: Connects parent avatar to replies */
-    /* Drawn relative to .comment (parent) to span down to replies */
-        display: none;
-    }
-
-    /* Reply Items */
-    .comment.reply {
-        margin-bottom: 24px;
-        position: relative;
-    }
+    .comment-replies { display: block; position: relative; margin-top: 24px; }
+    .comment.reply { margin-bottom: 24px; position: relative; }
     
     /* Curve Connector for Reply */
     .comment.reply::before {
@@ -827,25 +823,26 @@
     div[id^="c"][id$="-c"] > span { display: none !important; } 
 
     /* TREE BRANCH CONNECTOR */
-    /* This draws the curve from the trunk (left) to the child avatar */
-    .inline-thread li { position: relative !important; margin-bottom: 24px !important; }
-    
-    .inline-thread .comment::before {
-        content: '';
-        position: absolute;
-        /* Line is at 0px of .inline-thread padding-box */
-        /* Padding-left is 36px. */
-        /* We want curve to start at 0 and go to ~36px */
-        left: -38px; /* Reach back to border (-36px pad - 2px border) */
-        top: -12px; 
-        width: 38px; 
-        height: 32px; 
-        border-bottom: 2px solid #e0e0e0;
-        border-left: 2px solid #e0e0e0; 
+    /* Threading Lines Connector */
+    .comment-thread li { list-style: none; position: relative; }
+    .comment-thread .comment-reply { display: none !important; } /* Hide Blogger default reply */
+
+    /* Curve Connector for Reply */
+    .comment.reply::before {
+        content: ""; position: absolute; top: 0; left: -36px;
+        width: 36px; height: 22px; 
+        border-bottom: 2px solid #e0e2e7;
         border-bottom-left-radius: 12px;
-        z-index: 1;
-        pointer-events: none;
+        border-left: 2px solid #e0e2e7;
+        z-index: 1; pointer-events: none;
     }
+    
+    /* Vertical Line Connector */
+    .comment.reply::after {
+        content: ""; position: absolute; left: -36px; top: -1000px; bottom: -24px;
+        width: 2px; background-color: #e0e2e7; z-index: 1; pointer-events: none;
+    }
+    .comment.reply:last-child::after { bottom: auto; height: 1012px; }
 
     /* FORM */
     .comment-form { margin-top: 48px; border: 1px solid #eee; border-radius: 8px; padding: 24px; background: #f8f9fa; }
@@ -881,7 +878,121 @@
         .related-grid { grid-template-columns: 1fr; } 
     }
 
-    .sp-body img { width: 100%; height: auto; border-radius: 12px; margin: 0.35rem 0; display: block; }
+    .sp-body img { width: 100%; height: auto; border-radius: 12px; margin: 0.35rem 0; display: block; cursor: zoom-in; transition: transform 0.2s ease; }
+    .sp-body img:hover { transform: scale(1.01); }
+    
+    /* Image Lightbox - Premium Preview */
+    .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0);
+        backdrop-filter: blur(0);
+        -webkit-backdrop-filter: blur(0);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: zoom-out;
+    }
+    .lightbox.active {
+        background: rgba(0, 0, 0, 0.92);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        opacity: 1;
+        visibility: visible;
+    }
+    .lightbox-img {
+        max-width: 92vw;
+        max-height: 92vh;
+        object-fit: contain;
+        border-radius: 16px;
+        box-shadow: 0 32px 100px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.08);
+        transform: scale(0.85) translateY(20px);
+        opacity: 0;
+        transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .lightbox.active .lightbox-img {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s ease;
+        opacity: 0;
+        transform: scale(0.8);
+        z-index: 10;
+    }
+    .lightbox.active .lightbox-close {
+        opacity: 1;
+        transform: scale(1);
+        transition-delay: 0.15s;
+    }
+    .lightbox-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.1) rotate(90deg);
+        border-color: rgba(255,255,255,0.3);
+    }
+    .lightbox-close svg {
+        width: 20px;
+        height: 20px;
+        color: #fff;
+    }
+    .lightbox-hint {
+        position: absolute;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.7);
+        background: rgba(0,0,0,0.5);
+        padding: 8px 16px;
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease 0.4s;
+        white-space: nowrap;
+        z-index: 10;
+    }
+    .lightbox.active .lightbox-hint { opacity: 1; }
+    
+    /* Lightbox Mobile Optimizations */
+    @media (max-width: 768px) {
+        .lightbox-img {
+            max-width: 96vw;
+            max-height: 85vh;
+            border-radius: 12px;
+        }
+        .lightbox-close {
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+        }
+        .lightbox-close svg {
+            width: 18px;
+            height: 18px;
+        }
+        .lightbox-hint {
+            top: auto;
+            bottom: 16px;
+            font-size: 0.6875rem;
+            padding: 6px 12px;
+        }
+        .sp-body img:hover { transform: none; } /* Disable hover scale on touch */
+    }
     /* Fix for Blogger separator wrapper */
     .sp-body .separator { margin: 2rem 0 !important; display: block !important; width: 100%; }
     .sp-body .separator a { margin-left: 0 !important; margin-right: 0 !important; }
@@ -1025,6 +1136,47 @@
         background-color: #1a73e8; /* Hardcoded darker blue for hover fallback */
     }
 
+    /* --- SKELETON LOADING OVERLAY --- */
+    .skeleton-overlay {
+        position: fixed;
+        top: var(--header-height); left: 0; right: 0; bottom: 0;
+        background: var(--color-bg);
+        z-index: 900; /* Below header (1000+) but above content */
+        display: flex;
+        flex-direction: column;
+        padding: 32px 16px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.15s ease;
+    }
+    .skeleton-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .skeleton-container {
+        max-width: 780px;
+        width: 100%;
+        margin: 0 auto;
+    }
+    .skeleton-bar {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: skeleton-pulse 1.2s ease-in-out infinite;
+        border-radius: 4px;
+    }
+    .skeleton-breadcrumb { height: 14px; width: 120px; margin-bottom: 20px; }
+    .skeleton-title { height: 36px; width: 85%; margin-bottom: 12px; border-radius: 6px; }
+    .skeleton-title-2 { height: 36px; width: 60%; margin-bottom: 24px; border-radius: 6px; }
+    .skeleton-meta { height: 14px; width: 200px; margin-bottom: 40px; }
+    .skeleton-image { height: 300px; width: 100%; margin-bottom: 32px; border-radius: 16px; }
+    .skeleton-line { height: 16px; width: 100%; margin-bottom: 12px; }
+    .skeleton-line:nth-child(odd) { width: 95%; }
+    .skeleton-line:last-child { width: 70%; }
+    @keyframes skeleton-pulse {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
     .f-brand-section { flex: 2; }
     .f-brand h3 { font-size: 1.125rem; color: #5F6368; font-weight: 500; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
     .f-brand svg { width: 100px; height: auto; fill: currentColor; }
@@ -1130,7 +1282,7 @@
 
 
 <b:section class='site-header' id='header' maxwidgets='1' showaddelement='no'>
-  <b:widget id='Header1' locked='true' title='Progressive Blur (Header)' type='Header' version='2' visible='true'>
+  <b:widget id='Header1' locked='true' title='Wahib&apos;s Journal (Header)' type='Header' version='2' visible='true'>
     <b:widget-settings>
       <b:widget-setting name='displayUrl'/>
       <b:widget-setting name='displayHeight'>0</b:widget-setting>
@@ -1145,8 +1297,8 @@
                 <!-- Header Left: Brand -->
                 <div class='header-left'>
                     <a aria-label='Homepage' class='brand-link' expr:href='data:blog.homepageUrl'>
-                        <svg height='28' viewBox='0 0 160 28' width='160' xmlns='http://www.w3.org/2000/svg'>
-                            <text dominant-baseline='middle' fill='#212121' font-family='&apos;Geist&apos;, sans-serif' font-size='24' font-weight='700' x='0' y='50%'>Materialism<tspan fill='#1A73E8'>.</tspan></text>
+                        <svg height='28' viewBox='0 0 100 28' width='100' xmlns='http://www.w3.org/2000/svg'>
+                            <text dominant-baseline='middle' fill='#212121' font-family='&apos;Geist&apos;, sans-serif' font-size='24' font-weight='700' x='0' y='50%'>Irawan<tspan fill='#1A73E8'>.</tspan></text>
                         </svg>
                     </a>
                 </div>
@@ -1155,18 +1307,17 @@
                 <div class='header-right'>
                     <nav class='nav-desktop'>
                         <div class='nav-links'>
-                            <a class='nav-link' href='#'>About</a>
-                            <a class='nav-link' href='#'>Technology</a>
+                            <a class='nav-link' href='/search/label/Refleksi'>Refleksi</a>
+                            <a class='nav-link' href='/search/label/Remote%20Working'>Remote Working</a>
                             <div class='nav-item-dropdown'>
-                                <a href='#'>Categories <svg fill='none' height='20' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='20'><path d='M6 9l6 6 6-6'/></svg></a>
+                                <a href='#'>My Products <svg fill='none' height='20' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='20'><path d='M6 9l6 6 6-6'/></svg></a>
                                 <div class='dropdown-menu'>
-                                    <a href='#'>Design</a>
-                                    <a href='#'>Lifestyle</a>
-                                    <a href='#'>Travel</a>
+                                    <a href='/search/label/Extension'>Extension</a>
+                                    <a href='/search/label/Design'>Design</a>
+                                    <a href='/search/label/Website'>Website</a>
                                 </div>
                             </div>
-                            <a class='nav-link' href='#'>Blog</a>
-                            <a class='nav-link' href='#'>Contact</a>
+                            <a class='nav-link' href='/search/label/Ngetips'>Ngetips</a>
                         </div>
                     <!-- Search Icon Trigger -->
                         <div aria-label='Open Search' class='search-btn' onclick='toggleSearch()' role='button' tabindex='0'>
@@ -1190,56 +1341,27 @@
             <!-- Search Bar Overlay -->
             <div class='search-bar-wrap' id='searchBar'>
                 <form action='/search' class='search-form' method='get'>
-                    <input class='search-input' name='q' placeholder='Search stories...' type='text'/>
+                    <input class='search-input' name='q' placeholder='Cari tulisan...' type='text'/>
                     <input name='max-results' type='hidden' value='6'/>
-                    <button class='search-submit' type='submit'>Search</button>
+                    <button class='search-submit' type='submit'>Cari</button>
                 </form>
             </div>
 
             <!-- Mobile Drawer Items -->
             <div class='mobile-nav' id='mobileNav'>
-                <a class='nav-link' href='#'>About</a>
-                <a class='nav-link' href='#'>Technology</a>
+                <a class='nav-link' href='/'>About</a>
+                <a class='nav-link' href='/search/label/Open%20Source'>Open Source</a>
                 <div class='nav-item-dropdown'>
-                    <a href='#'>Categories <svg fill='none' height='20' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='20'><path d='M6 9l6 6 6-6'/></svg></a>
+                    <a href='#'>Technology <svg fill='none' height='20' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='20'><path d='M6 9l6 6 6-6'/></svg></a>
                     <div class='dropdown-menu'>
-                        <a href='#'>Design</a>
-                        <a href='#'>Lifestyle</a>
-                        <a href='#'>Travel</a>
+                        <a href='/search/label/AI'>Artificial Intelligence</a>
+                        <a href='/search/label/WebDev'>Web Development</a>
+                        <a href='/search/label/Gadgets'>Gadgets</a>
                     </div>
                 </div>
-                <a class='nav-link' href='#'>Blog</a>
-                <a class='nav-link' href='#'>Contact</a>
+                <a class='nav-link' href='/search/label/Refleksi'>Refleksi</a>
+                <a class='nav-link' href='/search/label/Ngetips'>Ngetips</a>
             </div>
-            <script>
-                // Clone Desktop Menu to Mobile Menu (Sync)
-                (function(){
-                    window.addEventListener(&#39;DOMContentLoaded&#39;, function() {
-                        var d = document.querySelector(&#39;.nav-links&#39;);
-                        var m = document.getElementById(&#39;mobileNav&#39;);
-                        if(d &amp;&amp; m) {
-                            m.innerHTML = d.innerHTML;
-                        }
-                        
-                        // Mobile Dropdown Toggle Logic
-                        // Use delegation since elements are dynamic
-                        if(m) {
-                            m.addEventListener(&#39;click&#39;, function(e) {
-                                // Find closest anchor inside mobile nav
-                                var target = e.target.closest(&#39;a&#39;);
-                                if(!target) return;
-                                
-                                // Check if it&#39;s a dropdown trigger
-                                var parent = target.parentElement;
-                                if(parent &amp;&amp; parent.classList.contains(&#39;nav-item-dropdown&#39;)) {
-                                    e.preventDefault(); // Stop navigation
-                                    parent.classList.toggle(&#39;expanded&#39;);
-                                }
-                            });
-                        }
-                    });
-                })();
-            </script>
         </b:includable>
     <b:includable id='behindImageStyle'>
     <b:if cond='data:sourceUrl'>
@@ -1278,15 +1400,15 @@
         
         <main class='main-area'>
              <b:section id='main' showaddelement='yes'>
-               <b:widget id='FeaturedPost1' locked='false' title='Featured Post' type='FeaturedPost' visible='true'>
+               <b:widget id='FeaturedPost1' locked='false' title='Featured Post' type='FeaturedPost' version='2' visible='true'>
                  <b:widget-settings>
                    <b:widget-setting name='showSnippet'>true</b:widget-setting>
                    <b:widget-setting name='showPostTitle'>true</b:widget-setting>
-                   <b:widget-setting name='postId'>0</b:widget-setting>
+                   <b:widget-setting name='postId'>4856051521307034562</b:widget-setting>
                    <b:widget-setting name='showFirstImage'>true</b:widget-setting>
-                   <b:widget-setting name='useMostRecentPost'>true</b:widget-setting>
+                   <b:widget-setting name='useMostRecentPost'>false</b:widget-setting>
                  </b:widget-settings>
-                  <b:includable id='main' var='this'>
+                 <b:includable id='main' var='this'>
                     <!-- Hero only on true homepage -->
                     <b:if cond='data:view.isHomepage'>
                     <div class='widget-content'>
@@ -1304,23 +1426,23 @@
                             <!-- Loop through posts (usually just one for FeaturedPost) -->
                             <b:loop values='data:posts' var='post'>
                                 <div class='hero-section'>
-                                       <div class='hero-card'>
+                                       <div class='hero-card' style='min-height:300px'>
                                            <div class='hero-info'>
-                                               <span class='hero-label'>Latest Highlight</span>
+                                               <span class='hero-label'>Pilihan Editor</span>
                                                <h2 class='hero-title'>
                                                    <a expr:href='data:post.url'><data:post.title/></a>
                                                </h2>
                                                <div class='hero-snippet'>
-                                                    <b:eval expr='snippet(data:post.snippets.long, { length: 120 })' />
+                                                    <b:eval expr='data:post.body snippet { length: 150, links: false, linebreaks: false }'/>
                                                </div>
                                                <a class='hero-btn' expr:href='data:post.url'>
-                                                   Read Story 
-                                                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                   Lanjut Baca 
+                                                   <svg fill='none' height='20' viewBox='0 0 24 24' width='20'><path d='M5 12H19M19 12L12 5M19 12L12 19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5'/></svg>
                                                </a>
                                            </div>
                                            <div class='hero-media'>
                                                <b:if cond='data:post.featuredImage'>
-                                                   <img expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 800, "16:9")' style='width:100%;height:100%;object-fit:cover'/>
+                                                   <img expr:alt='data:post.title' expr:src='data:post.featuredImage resizeImage 1000' style='width:100%;height:100%;object-fit:cover'/>
                                                <b:else/>
                                                    <!-- Fallback generic image container -->
                                                    <div style='width:100%;height:100%;background:#F1F3F4;display:flex;align-items:center;justify-content:center'>
@@ -1336,7 +1458,7 @@
                     </b:if>
                   </b:includable>
                </b:widget>
-               <b:widget id='Blog1' locked='false' title='Blog Posts' type='Blog' version='2' visible='true'>
+               <b:widget id='Blog1' locked='false' title='Postingan Blog' type='Blog' version='2' visible='true'>
                  <b:widget-settings>
                    <b:widget-setting name='showDateHeader'>false</b:widget-setting>
                    <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
@@ -1355,10 +1477,10 @@
                    <b:widget-setting name='showLocation'>true</b:widget-setting>
                    <b:widget-setting name='postLabelsLabel'/>
                    <b:widget-setting name='showTimestamp'>true</b:widget-setting>
-                   <b:widget-setting name='postsPerAd'>3</b:widget-setting>
+                   <b:widget-setting name='postsPerAd'>1</b:widget-setting>
                    <b:widget-setting name='showBacklinks'>false</b:widget-setting>
                    <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
-                   <b:widget-setting name='showInlineAds'>true</b:widget-setting>
+                   <b:widget-setting name='showInlineAds'>false</b:widget-setting>
                    <b:widget-setting name='showReactions'>false</b:widget-setting>
                  </b:widget-settings>
                  <b:includable id='main' var='top'>
@@ -1387,9 +1509,9 @@
                                 
                                 <div class='error-content'>
                                     <h1 class='error-title'>404</h1>
-                                    <p class='error-message'>Oops! Ghost wandered by...</p>
-                                    <p class='error-detail'>The page you're looking for seems to have wandered off somewhere else.</p>
-                                    <a class='btn-home' href='/'>Back to Home</a>
+                                    <p class='error-message'>Ups! Hantu lewat...</p>
+                                    <p class='error-detail'>Halaman yang kamu cari sepertinya sudah gentayangan ke tempat lain.</p>
+                                    <a class='btn-home' href='/'>Kembali ke Beranda</a>
                                 </div>
                             </div>
                         </b:if>
@@ -1401,7 +1523,7 @@
                                     <div class='search-status-wrap'>
                                         <div class='status-text'>
                                             <b:if cond='data:view.isLabelSearch'>
-                                                Menampilkan artikel dengan label <span class='status-highlight'><data:view.search.label/></span>
+                                                Menampilkan artikel dalam kategori <span class='status-highlight'><data:view.search.label/></span>
                                             <b:elseif cond='data:view.search.query'/>
                                                 Menampilkan hasil pencarian untuk <span class='status-highlight'><data:view.search.query/></span>
                                             </b:if>
@@ -1409,10 +1531,10 @@
                                     </div>
                                 </b:if>
                             
+                            <!-- HOMEPAGE: Section Heading -->
                             <b:if cond='data:view.isHomepage'>
-                                <h3 class='section-heading'>Latest Stories</h3>
+                                <h3 class='section-heading'>Tulisan Terbaru</h3>
                             </b:if>
-
                         
                             <!-- POSTS GRID (Remaining Posts) -->
                             <div class='posts-grid' id='posts-grid'>
@@ -1428,19 +1550,366 @@
                                             </b:if>
                                         </div>
                                         <div style='margin-top:1.5rem;display:flex;justify-content:center;'>
-                                            <a class='btn-home' href='/'>Back to Home</a>
+                                            <a class='btn-home' href='/'>Kembali ke Beranda</a>
                                         </div>
                                     </div>
                                 <b:else/>
-                                    <!-- Main Post Loop -->
-                                     <b:loop index='i' values='data:posts' var='post'>
-                                         <b:include data='post' name='postCard'/>
-                                     </b:loop>
+                                    <!-- Smart filter: exclude featured post from grid on homepage -->
+                                    <b:with value='data:widgets.FeaturedPost filter (w =&gt; w.sectionId == &quot;main&quot;) map (w =&gt; w.postId)' var='featuredPostIds'>
+                                        <b:with value='data:view.isHomepage ? data:posts filter (post =&gt; post.id not in data:featuredPostIds) : data:posts' var='filteredPosts'>
+                                            <b:loop index='i' values='data:filteredPosts' var='post'>
+                                                <b:include data='post' name='postCard'/>
+                                            </b:loop>
+                                        </b:with>
+                                    </b:with>
                                 </b:if>
                             </div>
                             
                             <!-- JSON Feed Pagination -->
-                            <b:include name='nextPrev'/>
+                            <div class='blog-pager' id='blog-pager' style='margin-top:80px;display:flex;justify-content:center;gap:60px;'>
+                                <a href='#' id='newer-link' style='font-weight:600;color:#757575;cursor:default'>&#8592; Sebelumnya</a>
+                                <a href='#' id='older-link' style='font-weight:600;color:#757575;cursor:default'>Selanjutnya &#8594;</a>
+                            </div>
+                            
+                            <script type='text/javascript'>
+                            //<![CDATA[
+                            (function() {
+                                var amp = String.fromCharCode(38);
+                                
+                                // Featured Post ID (for filtering from grid to avoid duplicates)
+                                var featuredPostId = '<b:eval expr="data:widgets.FeaturedPost first (w =&gt; w.sectionId == &quot;main&quot;).postId ?: &quot;&quot;"/>';
+                                
+                                // Detect context: homepage, label, or search
+                                var params = new URLSearchParams(window.location.search);
+                                var path = window.location.pathname;
+                                var isLabelPage = path.indexOf('/search/label/') === 0;
+                                var isSearchPage = path === '/search' && params.has('q');
+                                var labelName = isLabelPage ? decodeURIComponent(path.split('/search/label/')[1]) : null;
+                                
+                                // Max Results: 6 for all pages (Featured Post widget handles hero separately)
+                                var maxResults = 6;
+
+                                var currentPage = parseInt(params.get('page')) || 1;
+                                var grid = document.getElementById('posts-grid');
+                                var cache = {};
+                                var newerLink = document.getElementById('newer-link');
+                                var olderLink = document.getElementById('older-link');
+                                
+                                // Helper to enable/disable buttons (Hide if disabled)
+                                function enableBtn(btn) { btn.style.display = 'block'; btn.style.color = '#202124'; btn.style.cursor = 'pointer'; }
+                                function disableBtn(btn) { btn.style.display = 'none'; btn.style.cursor = 'default'; btn.onclick = null; }
+                                
+                                function checkPagerVisibility() {
+                                    var pager = document.getElementById('blog-pager');
+                                    var newer = document.getElementById('newer-link');
+                                    var older = document.getElementById('older-link');
+                                    if (pager && newer && older) {
+                                        if (newer.style.display === 'none' && older.style.display === 'none') {
+                                            pager.style.display = 'none';
+                                        } else {
+                                            pager.style.display = 'flex';
+                                        }
+                                    }
+                                }
+                                
+                                // Helper for status bar management
+                                function getOrCreateStatusBar() {
+                                    var bar = document.querySelector('.search-status-wrap');
+                                    if (!bar) {
+                                        bar = document.createElement('div');
+                                        bar.className = 'search-status-wrap';
+                                        bar.innerHTML = '<div class="status-text"></div>';
+                                        bar.style.display = 'none';
+                                        grid.parentNode.insertBefore(bar, grid);
+                                    }
+                                    return bar;
+                                }
+                                function showStatus(labelText) {
+                                    var bar = getOrCreateStatusBar();
+                                    bar.style.display = 'block';
+                                    bar.querySelector('.status-text').innerHTML = 'Menampilkan artikel dalam kategori <span class="status-highlight">' + labelText + '</span>';
+                                }
+                                function hideStatus() {
+                                    var bar = document.querySelector('.search-status-wrap');
+                                    if (bar) bar.style.display = 'none';
+                                }
+                                
+                                // Helper to toggle Homepage-specific elements (Hero and Heading)
+                                function toggleHomepageElements(show) {
+                                    var hero = document.querySelector('.hero-section');
+                                    var heading = document.querySelector('.section-heading');
+                                    if (hero) hero.style.display = show ? 'block' : 'none';
+                                    if (heading) heading.style.display = show ? 'flex' : 'none';
+                                }
+                                
+                                // Render function
+                                function renderPosts(entries) {
+                                    grid.innerHTML = '';
+                                    entries.forEach(function(entry, index) {
+                                        // Get post ID from entry
+                                        var entryId = entry.id.$t.split('.post-')[1];
+                                        
+                                        // Skip featured post on homepage (it's shown in hero widget)
+                                        if (!isLabelPage && !isSearchPage && featuredPostId && entryId === featuredPostId) return;
+
+                                        var url = entry.link.find(function(l) { return l.rel === 'alternate'; }).href;
+                                        var title = entry.title.$t;
+                                        var snippet = '';
+                                        if (entry.content && entry.content.$t) {
+                                            var tmp = document.createElement('div');
+                                            tmp.innerHTML = entry.content.$t;
+                                            snippet = tmp.textContent.substring(0, 140) + '...';
+                                        }
+                                        var label = entry.category ? entry.category[0].term : 'Tulisan';
+                                        var labelUrl = '/search/label/' + encodeURIComponent(label);
+                                                                                // Match ALL Blogger size patterns: /s72-c/, /s72-w640-h350-c/, /w600/, etc.
+                                        var img = entry.media$thumbnail ? entry.media$thumbnail.url.replace(/\/[sw]\d+[^\/]*\//, '/w800/') : '';
+                                        
+                                        var card = document.createElement('article');
+                                        card.className = 'post-card';
+                                        card.innerHTML = 
+                                            '<a href="' + url + '" aria-label="' + title + '" style="display:block;text-decoration:none;color:inherit">' +
+                                            '<div class="card-media">' + (img ? '<img alt="' + title + '" src="' + img + '" loading="lazy"/>' : '<div style="width:100%;height:100%;background:#f1f3f4;display:flex;align-items:center;justify-content:center;color:#bdc1c6;"><svg style="width:48px" viewBox="0 0 24 24"><path d="M18 13v7H4V6h5.02c.05-.71.22-1.38.48-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5l-2-2zm-1.5 5h-11l3.5-4.5 2.5 3.01L14.5 12l2 2.68z" fill="currentColor"></path></svg></div>') + '</div></a>' +
+                                            '<div class="card-meta"><a href="' + labelUrl + '" style="text-decoration:none;color:inherit">' + label + '</a></div>' +
+                                            '<a href="' + url + '" style="text-decoration:none;color:inherit"><h2 class="card-title">' + title + '</h2></a>' +
+                                            '<div class="card-snippet">' + snippet + '</div>' +
+                                            '<a href="' + url + '" style="text-decoration:none;margin-top:auto;width:fit-content"><div class="read-more-pill" style="margin-top:0">Lanjut Baca <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-left:4px"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>';
+                                        grid.appendChild(card);
+                                    });
+                                    window.scrollTo({top: 0, behavior: 'smooth'});
+                                }
+                                
+                                // Fetch page data
+                                function fetchPage(page) {
+                                    var start = (page - 1) * maxResults + 1;
+                                    var feedUrl;
+                                    var searchQuery = isSearchPage ? params.get('q') : null;
+                                    
+                                    if (isLabelPage && labelName) {
+                                        feedUrl = '/feeds/posts/default/-/' + encodeURIComponent(labelName) + '?alt=json' + amp + 'start-index=' + start + amp + 'max-results=' + maxResults;
+                                    } else if (isSearchPage && searchQuery) {
+                                        feedUrl = '/feeds/posts/default?alt=json' + amp + 'q=' + encodeURIComponent(searchQuery) + amp + 'start-index=' + start + amp + 'max-results=' + maxResults;
+                                    } else {
+                                        feedUrl = '/feeds/posts/default?alt=json' + amp + 'start-index=' + start + amp + 'max-results=' + maxResults;
+                                    }
+                                    return fetch(feedUrl).then(function(r) { return r.json(); });
+                                }
+                                
+                                // Prefetch and cache
+                                function prefetch(page) {
+                                    if (cache[page]) return;
+                                    fetchPage(page).then(function(data) {
+                                        if (data.feed.entry) cache[page] = data.feed.entry;
+                                    });
+                                }
+                                
+                                // Navigate to page instantly
+                                function goToPage(page, pushState) {
+                                    currentPage = page;
+                                    var baseUrl = isLabelPage ? path : '/';
+                                    var newUrl = page === 1 ? baseUrl : baseUrl + '?page=' + page;
+                                    if (pushState) history.pushState({page: page}, '', newUrl);
+                                    
+                                    // Toggle Hero: Valid only on Homepage (not Label/Search)
+                                    if (!isLabelPage && !isSearchPage) {
+                                        toggleHomepageElements(page === 1);
+                                    }
+                                    
+                                    updateButtons();
+                                    
+                                    // if (page === 1) { window.location.href = baseUrl; return; } // Removed this line
+                                    
+                                    if (cache[page]) {
+                                        renderPosts(cache[page]);
+                                        checkOlderState();
+                                    } else {
+                                        grid.style.opacity = '0.5';
+                                        fetchPage(page).then(function(data) {
+                                            if (data.feed.entry) {
+                                                cache[page] = data.feed.entry;
+                                                renderPosts(data.feed.entry);
+                                                checkOlderState();
+                                            }
+                                            grid.style.opacity = '1';
+                                        });
+                                    }
+                                }
+                                
+                                // Update button states
+                                function updateButtons() {
+                                    if (currentPage > 1) {
+                                        enableBtn(newerLink);
+                                        newerLink.onclick = function(e) { e.preventDefault(); goToPage(currentPage - 1, true); };
+                                    } else {
+                                        disableBtn(newerLink);
+                                    }
+                                    
+                                    disableBtn(olderLink);
+                                    checkPagerVisibility();
+                                }
+                                
+                                // Initial load for page 2+
+                                if (currentPage > 1) {
+                                    // HIDE HERO if on Homepage Page 2+ (Server might render it, so we hide it)
+                                    if (!isLabelPage && !isSearchPage) {
+                                        toggleHomepageElements(false);
+                                    }
+                                    
+                                    grid.style.opacity = '0.5';
+                                    fetchPage(currentPage).then(function(data) {
+                                        if (data.feed.entry) {
+                                            cache[currentPage] = data.feed.entry;
+                                            renderPosts(data.feed.entry);
+                                        }
+                                        grid.style.opacity = '1';
+                                    });
+                                }
+                                
+                                // Check for next page
+                                function checkOlderState() {
+                                    disableBtn(olderLink);
+                                    fetchPage(currentPage + 1).then(function(data) {
+                                        if (data.feed && data.feed.entry && data.feed.entry.length > 0) {
+                                            cache[currentPage + 1] = data.feed.entry;
+                                            enableBtn(olderLink);
+                                            olderLink.onclick = function(e) { e.preventDefault(); goToPage(currentPage + 1, true); };
+                                        } else {
+                                            disableBtn(olderLink);
+                                        }
+                                        checkPagerVisibility();
+                                    }).catch(function(err) {
+                                        console.error('checkOlderState error:', err);
+                                        checkPagerVisibility();
+                                    });
+                                }
+                                
+                                // Setup buttons
+                                updateButtons();
+                                setTimeout(checkOlderState, 100);
+                                
+                                // AJAX Navigation Logic (Simplified)
+                                document.addEventListener('click', function(e) {
+                                    // ... Link Click Handlers ...
+                                    var link = e.target.closest('a[href*="/search/label/"]');
+                                    var logoLink = e.target.closest('.brand-link');
+                                    
+                                    if (!link && !logoLink) return;
+                                    
+                                    // CLOSE MOBILE MENU (if open)
+                                    var nav = document.getElementById('mobileNav');
+                                    var btn = document.getElementById('menuBtn');
+                                    if (nav && nav.classList.contains('active')) {
+                                        nav.classList.remove('active');
+                                        if (btn) btn.classList.remove('active');
+                                    }
+                                    
+                                    var currentPath = window.location.pathname;
+                                    var href, clickedLabel;
+                                    
+                                    if (link) {
+                                        // Label Click
+                                        if (currentPath !== '/' && currentPath.indexOf('/search/label/') !== 0) return;
+                                        e.preventDefault();
+                                        href = link.getAttribute('href');
+                                        // Strip m=1 from href to prevent visible delay
+                                        href = href.replace(/[?&]m=1/g, '').replace(/\?$/, '').replace(/&$/, '').replace(/\?&/, '?');
+                                        clickedLabel = decodeURIComponent(href.split('/search/label/')[1].split('?')[0]);
+                                        labelName = clickedLabel;
+                                        isLabelPage = true;
+                                    } else {
+                                        // Logo Click
+                                        if (currentPath === '/') return;
+                                        if (currentPath.indexOf('/search/label/') !== 0) return;
+                                        
+                                        // CRITICAL FIX: If Hero Section is missing (started on Label page), force reload
+                                        if (!document.querySelector('.hero-section')) return;
+                                        
+                                        e.preventDefault();
+                                        href = '/';
+                                        clickedLabel = null;
+                                        labelName = null;
+                                        isLabelPage = false;
+                                    }
+                                    
+                                    currentPage = 1;
+                                    cache = {};
+                                    // Update maxResults based on new state
+                                    maxResults = (isLabelPage) ? 6 : 7;
+                                    
+                                    history.pushState({label: clickedLabel, page: 1, home: !clickedLabel}, '', href);
+                                    
+                                    if (clickedLabel) {
+                                        showStatus(clickedLabel);
+                                        toggleHomepageElements(false); // Hide Hero on Label Page
+                                    } else {
+                                        hideStatus();
+                                        toggleHomepageElements(true); // Show Hero on Homepage
+                                    }
+                                    
+                                    grid.style.opacity = '0.7';
+                                    grid.style.transition = 'opacity 0.15s';
+                                    fetchPage(1).then(function(data) {
+                                        if (data.feed.entry) {
+                                            cache[1] = data.feed.entry;
+                                            renderPosts(data.feed.entry);
+                                            updateButtons();
+                                            checkOlderState();
+                                        } else {
+                                            // Empty State AJAX Handling - Hide the "Menampilkan..." status first
+                                            hideStatus();
+                                            var msg = 'Belum ada artikel dalam kategori <span class="status-highlight">' + labelName + '</span>';
+                                            grid.innerHTML = '<div class="search-status-wrap" style="display:block;margin-top:40px; grid-column: 1 / -1; width: 100%; text-align:center;"><div class="status-text">' + msg + '</div><div style="margin-top:1.5rem;display:flex;justify-content:center;"><a class="btn-home" href="/">Kembali ke Beranda</a></div></div>';
+                                            disableBtn(newerLink);
+                                            disableBtn(olderLink);
+                                            checkPagerVisibility();
+                                        }
+                                        grid.style.opacity = '1';
+                                    });
+                                });
+                                
+                                window.onpopstate = function(e) {
+                                    if ((e.state && e.state.label) || (e.state && e.state.home)) {
+                                        labelName = e.state.label || null;
+                                        isLabelPage = !!e.state.label;
+                                        currentPage = e.state.page || 1;
+                                        cache = {};
+                                        
+                                        // Update maxResults
+                                        maxResults = (isLabelPage) ? 6 : 7;
+                                        
+                                        if(labelName) {
+                                            showStatus(labelName);
+                                            toggleHomepageElements(false);
+                                        } else {
+                                            hideStatus();
+                                            toggleHomepageElements(true);
+                                        }
+                                        
+                                        fetchPage(currentPage).then(function(data) {
+                                            if (data.feed.entry) {
+                                                renderPosts(data.feed.entry);
+                                                updateButtons();
+                                                checkOlderState();
+                                            } else {
+                                                if (isLabelPage) {
+                                                    hideStatus();
+                                                    var msg = 'Belum ada artikel dalam kategori <span class="status-highlight">' + labelName + '</span>';
+                                                    grid.innerHTML = '<div class="search-status-wrap" style="display:block;margin-top:40px; grid-column: 1 / -1; width: 100%; text-align:center;"><div class="status-text">' + msg + '</div><div style="margin-top:1.5rem;display:flex;justify-content:center;"><a class="btn-home" href="/">Kembali ke Beranda</a></div></div>';
+                                                }
+                                                disableBtn(newerLink);
+                                                disableBtn(olderLink);
+                                                checkPagerVisibility();
+                                            }
+                                        });
+                                    } else if (e.state && e.state.page) {
+                                        goToPage(e.state.page, false);
+                                    } else {
+                                        window.location.reload();
+                                    }
+                                };
+                            })();
+                            //]]>
+                            </script>
                         <b:else/>     
                             <!-- SINGLE VIEW -->
                             <b:loop values='data:posts' var='post'>
@@ -1608,7 +2077,7 @@
             <b:class cond='data:comment.isDeleted' name='is-deleted'/>
 
             <div class='avatar-image-container'>
-                <img alt='Avatar' class='lazyload' expr:src='resizeImage(data:comment.authorAvatarSrc, 64, &quot;1:1&quot;)' height='40' width='40'/>
+                <img alt='Avatar' expr:src='resizeImage(data:comment.authorAvatarSrc, 64, &quot;1:1&quot;)' height='40' loading='lazy' width='40'/>
             </div>
 
             <div class='comment-wrapper'>
@@ -1659,7 +2128,7 @@
             <b:class cond='data:reply.isDeleted' name='is-deleted'/>
 
             <div class='avatar-image-container'>
-                 <img alt='Avatar' class='lazyload' expr:src='resizeImage(data:reply.authorAvatarSrc, 64, &quot;1:1&quot;)' height='32' width='32'/>
+                 <img alt='Avatar' expr:src='resizeImage(data:reply.authorAvatarSrc, 64, &quot;1:1&quot;)' height='32' loading='lazy' width='32'/>
             </div>
 
             <div class='comment-block'>    
@@ -1757,26 +2226,19 @@
 </b:includable>
                  <b:includable id='nextPrev'>
   <b:if cond='data:view.isMultipleItems'>
-    <!-- Smart pagination: Show if newerPageUrl exists OR (posts >= 6 and olderPageUrl exists) -->
-    <b:if cond='!data:posts.empty and (data:newerPageUrl or (data:posts.length gte 6 and data:olderPageUrl))'>
-      <div class='blog-pager' style='margin-top:80px;display:flex;justify-content:center;gap:60px;'>
-        <b:if cond='data:newerPageUrl'>
-          <a class='prev-page-link' expr:href='data:newerPageUrl' style='font-weight:600'>&#8592; Newer</a>
-        <b:else/>
-          <span style='font-weight:600;color:#757575;cursor:default'>&#8592; Newer</span>
-        </b:if>
+    <div class='blog-pager' style='margin-top:80px;display:flex;justify-content:center;gap:60px;'>
+      <b:if cond='data:newerPageUrl'>
+        <a class='prev-page-link' expr:href='data:newerPageUrl' style='font-weight:600'>&#8592; Sebelumnya</a>
+      <b:else/>
+        <span style='font-weight:600;color:#757575;cursor:default'>&#8592; Sebelumnya</span>
+      </b:if>
 
-        <!-- Only show Older if posts >= 6 (means there's real pagination needed) -->
-        <b:if cond='data:olderPageUrl and data:posts.length gte 6'>
-          <a class='next-page-link' expr:href='data:olderPageUrl' style='font-weight:600'>Older &#8594;</a>
-        <b:elseif cond='data:olderPageUrl'/>
-          <!-- Has older but less than 6 posts on this page - hide Older button -->
-          <span style='font-weight:600;color:#757575;cursor:default'>Older &#8594;</span>
-        <b:else/>
-          <span style='font-weight:600;color:#757575;cursor:default'>Older &#8594;</span>
-        </b:if>
-      </div>
-    </b:if>
+      <b:if cond='data:olderPageUrl'>
+        <a class='next-page-link' expr:href='data:olderPageUrl' style='font-weight:600'>Selanjutnya &#8594;</a>
+      <b:else/>
+        <span style='font-weight:600;color:#757575;cursor:default'>Selanjutnya &#8594;</span>
+      </b:if>
+    </div>
   </b:if>
 </b:includable>
                  <b:includable id='post' var='post'>
@@ -1804,28 +2266,47 @@
 </b:includable>
                  <b:includable id='postCard' var='post'>
                         <article class='post-card' expr:data-timestamp='data:post.timestampISO8601'>
-                            <div class='card-meta'>
-                                <!-- Date on Left -->
-                                <span><data:post.dateHeader/></span>
-                            </div>
-                            
-                            <div class='card-content-wrap'>
-                                <a expr:href='data:post.url' style='text-decoration:none;color:inherit'>
-                                    <h2 class='card-title'><data:post.title/></h2>
-                                </a>
-                                
-                                <div class='card-snippet'>
-                                    <b:eval expr='data:post.body snippet { length: 180, links: false, linebreaks: false }'/>
+                            <!-- Image Link -->
+                            <a expr:aria-label='data:post.title' expr:href='data:post.url' style='display:block;text-decoration:none;color:inherit'>
+                                <div class='card-media'>
+                                     <b:if cond='data:post.featuredImage'>
+                                        <img decoding='async' expr:alt='data:post.title' expr:fetchpriority='data:i == 0 ? &quot;high&quot; : &quot;auto&quot;' expr:loading='data:i == 0 ? &quot;eager&quot; : &quot;lazy&quot;' expr:src='data:post.featuredImage resizeImage 800'/>
+                                     <b:else/>
+                                        <div style='width:100%;height:100%;background:#f1f3f4;display:flex;align-items:center;justify-content:center;color:#bdc1c6;'>
+                                            <svg style='width:48px' viewBox='0 0 24 24'><path d='M18 13v7H4V6h5.02c.05-.71.22-1.38.48-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5l-2-2zm-1.5 5h-11l3.5-4.5 2.5 3.01L14.5 12l2 2.68z' fill='currentColor'/></svg>
+                                        </div>
+                                     </b:if>
                                 </div>
-                                
+                            </a>
+
+                            <!-- Label Link (Independent) -->
+                            <div class='card-meta'>
                                 <b:if cond='data:post.labels'>
-                                    <div style='margin-top:6px;font-size:0.75rem;font-family:var(--font-mono);color:var(--color-meta);opacity:0.8'>
-                                        <b:loop values='data:post.labels' var='label'>
-                                           <span style='margin-right:8px'>#<data:label.name/></span>
-                                        </b:loop>
-                                    </div>
+                                    <a expr:href='data:post.labels.first.url' style='text-decoration:none;color:inherit'><data:post.labels.first.name/></a>
+                                <b:else/>
+                                    Tulisan
                                 </b:if>
                             </div>
+
+                            <!-- Title Link -->
+                            <a expr:href='data:post.url' style='text-decoration:none;color:inherit'>
+                                <h2 class='card-title'><data:post.title/></h2>
+                            </a>
+
+                            <span class='card-date'><data:post.dateHeader/></span>
+
+                            <div class='card-snippet'>
+                            <!-- (Snippet removed) -->
+                            <b:eval expr='data:post.body snippet { length: 140, links: false, linebreaks: false }'/>
+                            </div>
+
+                            <!-- Read More Link -->
+                            <a expr:href='data:post.url' style='text-decoration:none;margin-top:auto;width:fit-content'>
+                                <div class='read-more-pill' style='margin-top:0'>
+                                    Lanjut Baca 
+                                    <svg fill='none' height='18' style='margin-left:4px' viewBox='0 0 24 24' width='18'><path d='M5 12H19M19 12L12 5M19 12L12 19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5'/></svg>
+                                </div>
+                            </a>
                         </article>
                     </b:includable>
                  <b:includable id='postCommentsAndAd' var='post'>
@@ -1888,30 +2369,101 @@
                  <b:includable id='postSingle' var='post'>
                         <article class='single-post-view'>
                             
+                            <!-- BlogPosting + Breadcrumb Schema Data (Hidden, for JS) -->
+                            <span class='schema-data' expr:data-author='data:post.author.name' expr:data-author-url='data:post.author.profileUrl' expr:data-blog-title='data:blog.title' expr:data-home-url='data:blog.homepageUrl' expr:data-image='data:post.featuredImage ?: &quot;https://lh3.googleusercontent.com/ULB6iJ9rFiMentxnmCZlA98YtpqGIv-sQ_Agcf7_yvC0=s1200&quot;' expr:data-label='data:post.labels.first.name ?: &quot;&quot;' expr:data-label-url='data:post.labels.first.url ?: &quot;&quot;' expr:data-title='data:post.title.escaped' expr:data-url='data:post.url' style='display:none'/>
+                            <!-- Date holders using time tag -->
+                            <time class='schema-date-published' expr:datetime='data:post.date.iso8601' style='display:none'/>
+                            <time class='schema-date-modified' expr:datetime='data:post.lastUpdated.iso8601' style='display:none'/>
+                            <script>
+                            //<![CDATA[
+                            (function() {
+                                var el = document.querySelector('.schema-data');
+                                if (!el) return;
+                                
+                                var d = el.dataset;
+                                
+                                // Get dates from time tags
+                                var datePublishedEl = document.querySelector('.schema-date-published');
+                                var dateModifiedEl = document.querySelector('.schema-date-modified');
+                                var datePublished = datePublishedEl ? datePublishedEl.getAttribute('datetime') : '';
+                                var dateModified = dateModifiedEl ? dateModifiedEl.getAttribute('datetime') : datePublished;
+                                
+                                // BlogPosting Schema
+                                var blogPosting = {
+                                    "@context": "https://schema.org",
+                                    "@type": "BlogPosting",
+                                    "mainEntityOfPage": {"@type": "WebPage", "@id": d.url},
+                                    "headline": d.title,
+                                    "image": d.image,
+                                    "author": {"@type": "Person", "name": d.author, "url": d.authorUrl},
+                                    "publisher": {
+                                        "@type": "Organization",
+                                        "name": d.blogTitle,
+                                        "logo": {"@type": "ImageObject", "url": "https://lh3.googleusercontent.com/ULB6iJ9rFiMentxnmCZlA98YtpqGIv-sQ_Agcf7_yvC0=s400"}
+                                    },
+                                    "datePublished": datePublished,
+                                    "dateModified": dateModified || datePublished
+                                };
+                                
+                                var s1 = document.createElement('script');
+                                s1.type = 'application/ld+json';
+                                s1.textContent = JSON.stringify(blogPosting);
+                                document.head.appendChild(s1);
+                                
+                                // Breadcrumb Schema
+                                var breadcrumb = {
+                                    "@context": "https://schema.org",
+                                    "@type": "BreadcrumbList",
+                                    "itemListElement": [
+                                        {"@type": "ListItem", "position": 1, "name": "Beranda", "item": d.homeUrl}
+                                    ]
+                                };
+                                
+                                if (d.label && d.labelUrl) {
+                                    breadcrumb.itemListElement.push({"@type": "ListItem", "position": 2, "name": d.label, "item": d.labelUrl});
+                                    breadcrumb.itemListElement.push({"@type": "ListItem", "position": 3, "name": d.title});
+                                } else {
+                                    breadcrumb.itemListElement.push({"@type": "ListItem", "position": 2, "name": d.title});
+                                }
+                                
+                                var s2 = document.createElement('script');
+                                s2.type = 'application/ld+json';
+                                s2.textContent = JSON.stringify(breadcrumb);
+                                document.head.appendChild(s2);
+                            })();
+                            //]]>
+                            </script>
+                            
                             <!-- 1. Breadcrumbs -->
                             <div class='breadcrumbs'>
-                                <a expr:href='data:blog.homepageUrl'>Home</a>
+                                <a expr:href='data:blog.homepageUrl'>Beranda</a>
                                 <b:if cond='data:post.labels'>
                                     <span>/</span>
-                                    <a expr:href='data:post.labels.first.url + "?max-results=6"'><data:post.labels.first.name/></a>
+                                    <a expr:href='data:post.labels.first.url'><data:post.labels.first.name/></a>
                                 </b:if>
+                                <span>/</span>
+                                <span class='current-page'><data:post.title/></span>
                             </div>
 
                             <header class='sp-header'>
                                 <!-- Title -->
                                 <h1 class='sp-title'><data:post.title/></h1>
                                 
-                                <!-- Meta Header: Author & Date -->
+                                <!-- Meta Header: Author & Date (hidden for static pages without labels) -->
+                                <b:if cond='data:post.labels'>
                                 <div class='sp-meta'>
                                     <div class='sp-author'>
-                                        <span class='by-text'>Written by</span>
+                                        <span class='by-text'>Ditulis oleh</span>
                                         <span class='author-name' expr:data-author-url='data:post.author.profileUrl'><data:post.author.name/></span>
                                     </div>
                                     <span class='meta-sep'>&#8226;</span>
                                     <div class='sp-date'>
                                         <data:post.date/>
                                     </div>
+                                    <span class='meta-sep'>&#8226;</span>
+                                    <div class='sp-reading-time' id='reading-time'/>
                                 </div>
+                                </b:if>
                             </header>
 
                             <div class='sp-body'>
@@ -1925,7 +2477,10 @@
                                     </b:if>
                                 </div>
                             </div>
-                                                        <!-- Share Buttons -->
+                            
+                            <!-- Share & Comments (hidden for static pages without labels) -->
+                            <b:if cond='data:post.labels'>
+                            <!-- Share Buttons -->
                             <div class='share-section'>
                                 <h4 class='share-title'>Share this story</h4>
                                 <div class='share-buttons'>
@@ -1943,18 +2498,18 @@
                                     </a>
                                 </div>
                             </div>
-                            <!-- 3. Comments -->
+                            <!-- Comments -->
                             <b:include data='post' name='comment_picker'/>
+                            </b:if>
                             
                             <!-- 4. Related Articles Check (Hidden script trigger) -->
                             <div id='related-posts-container'/>
                             <script type='text/javascript'>
-
                                 var currentPostId = &quot;<data:post.id/>&quot;;
                                 var relatedLabels = [
                                     <b:if cond='data:post.labels'>
                                         <b:loop values='data:post.labels' var='label'>
-                                            &quot;<data:label.name.jsEscaped/>&quot;,
+                                            &quot;<data:label.name/>&quot;,
                                         </b:loop>
                                     </b:if>
                                 ];
@@ -2085,7 +2640,7 @@
              <b:section id='sidebar' showaddelement='yes'>
                <b:widget id='PopularPosts1' locked='false' title='Popular' type='PopularPosts' version='2' visible='true'>
                  <b:widget-settings>
-                   <b:widget-setting name='numItemsToShow'>10</b:widget-setting>
+                   <b:widget-setting name='numItemsToShow'>3</b:widget-setting>
                    <b:widget-setting name='showThumbnails'>true</b:widget-setting>
                    <b:widget-setting name='showSnippets'>true</b:widget-setting>
                    <b:widget-setting name='timeRange'>LAST_YEAR</b:widget-setting>
@@ -2114,7 +2669,7 @@
                              <h4 class='widget-title'><data:title/></h4>
                              <div class='label-cloud'>
                                  <b:loop values='data:labels' var='label'>
-                                     <a class='label-link' expr:href='data:label.url + "?max-results=6"'><data:label.name/></a>
+                                     <a class='label-link' expr:href='data:label.url'><data:label.name/></a>
                                  </b:loop>
                              </div>
                          </div>
@@ -2123,7 +2678,7 @@
   <b:loop values='data:labels' var='label'>
     <span class='label-size'>
       <b:class expr:name='&quot;label-size-&quot; + data:label.cssSize'/>
-      <a class='label-name' expr:href='data:label.url + "?max-results=6"'>
+      <a class='label-name' expr:href='data:label.url'>
         <data:label.name/>
         <b:if cond='data:this.showFreqNumbers'>
           <span class='label-count'><data:label.count/></span>
@@ -2143,7 +2698,7 @@
   <ul>
     <b:loop values='data:labels' var='label'>
       <li>
-        <a class='label-name' expr:href='data:label.url + "?max-results=6"'>
+        <a class='label-name' expr:href='data:label.url'>
           <data:label.name/>
           <b:if cond='data:this.showFreqNumbers'>
             <span class='label-count'><data:label.count/></span>
@@ -2172,15 +2727,15 @@
                 <div class='f-brand-section'>
                     <div class='f-brand'>
                         <h3>
-                            <svg height='28' viewBox='0 0 160 28' width='160' xmlns='http://www.w3.org/2000/svg'>
-                                <text dominant-baseline='middle' fill='#212121' font-family='&apos;Geist&apos;, sans-serif' font-size='24' font-weight='700' x='0' y='50%'>Materialism<tspan fill='#1A73E8'>.</tspan></text>
+                            <svg height='28' viewBox='0 0 100 28' width='100' xmlns='http://www.w3.org/2000/svg'>
+                                <text dominant-baseline='middle' fill='#212121' font-family='&apos;Geist&apos;, sans-serif' font-size='24' font-weight='700' x='0' y='50%'>Irawan<tspan fill='#1A73E8'>.</tspan></text>
                             </svg>
                         </h3>
                         <p class='f-desc'>
                             <b:if cond='data:blog.description'>
                                 <data:blog.description/>
                             <b:else/>
-                                A clean, modern, and lightweight Blogger theme inspired by Material Design principles.
+                                Blog ini berisi refleksi ringan, ide acak, dan ulasan seputar teknologi, gaya hidup, serta cerita sehari-hari.
                             </b:if>
                         </p>
                     </div>
@@ -2191,34 +2746,34 @@
                     <div class='f-col'>
                         <h4>About</h4>
                         <ul>
-                            <li><a href='#'>About</a></li>
-                            <li><a href='#'>Contact</a></li>
-                            <li><a href='#'>Portfolio</a></li>
+                            <li><a href='/p/tentang-saya.html'>Tentang</a></li>
+                            <li><a href='/p/kontak.html'>Kontak</a></li>
+                            <li><a href='https://dribbble.com/wahibirawan'>Portfolio</a></li>
                         </ul>
                     </div>
                     <div class='f-col'>
                         <h4>Topics</h4>
                         <ul>
-                            <li><a href='#'>Technology</a></li>
-                            <li><a href='#'>Design</a></li>
-                            <li><a href='#'>Life</a></li>
+                            <li><a href='/search/label/Refleksi'>Refleksi</a></li>
+                            <li><a href='/search/label/Ngetips'>Ngetips</a></li>
+                            <li><a href='/search/label/Remote Working'>Remote Working</a></li>
                         </ul>
                     </div>
                     <div class='f-col'>
                         <h4>Connect</h4>
                         <ul>
-                            <li><a href='#'>X (Twitter)</a></li>
-                            <li><a href='#'>LinkedIn</a></li>
-                            <li><a href='#'>Instagram</a></li>
+                            <li><a href='https://x.com/progressiveblur'>X (Twitter)</a></li>
+                            <li><a href='https://linkedin.com/in/wahibirawan'>LinkedIn</a></li>
+                            <li><a href='https://instagram.com/designbywahib'>Instagram</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class='footer-bottom'>
-                <span>&#169; <span id='year'/> Materialism. All rights reserved.</span>
+                <span>&#169; <span id='year'/> Wahib Irawan. Hak cipta dilindungi.</span>
                 <div style='display:flex;gap:2rem'>
-                    <a href='#'>Privacy</a>
-                    <a href='#'>Terms</a>
+                    <a href='/p/privasi.html'>Privasi</a>
+                    <a href='/p/ketentuan.html'>Ketentuan</a>
                 </div>
             </div>
         </b:includable>
@@ -2227,400 +2782,254 @@
 
 <script>
 //<![CDATA[
-// Smart pagination with PREFETCH ON HOVER
-(function() {
-    var prefetchCache = {}; // Cache: href -> { isFakeFirstPage: bool, promise: Promise }
-    
-    // Prefetch on hover
-    document.addEventListener('mouseenter', function(e) {
-        var link = e.target.closest('.prev-page-link');
-        if (!link) return;
+    document.addEventListener('DOMContentLoaded', function() {
         
-        var href = link.getAttribute('href');
-        if (!href || href.indexOf('reverse-paginate') === -1) return;
-        if (prefetchCache[href]) return; // Already prefetching/cached
-        
-        // Start prefetch
-        prefetchCache[href] = {
-            isFakeFirstPage: null,
-            promise: fetch(href)
-                .then(function(r) { return r.text(); })
-                .then(function(html) {
-                    var parser = new DOMParser();
-                    var doc = parser.parseFromString(html, 'text/html');
-                    var newerOnDest = doc.querySelector('.prev-page-link');
-                    
-                    var isFake = false;
-                    if (newerOnDest) {
-                        var destHref = newerOnDest.getAttribute('href');
-                        if (destHref === '/' || (destHref && destHref.match(/^https?:\/\/[^\/]+\/?$/))) {
-                            isFake = true;
-                        }
-                    }
-                    prefetchCache[href].isFakeFirstPage = isFake;
-                    return isFake;
-                })
-                .catch(function() {
-                    prefetchCache[href].isFakeFirstPage = false;
-                    return false;
-                })
-        };
-    }, true);
-    
-    // Handle click
-    document.addEventListener('click', function(e) {
-        var link = e.target.closest('.prev-page-link');
-        if (!link) return;
-        
-        var href = link.getAttribute('href');
-        if (!href || href.indexOf('reverse-paginate') === -1) return;
-        
-        e.preventDefault();
-        link.style.opacity = '0.5';
-        link.style.pointerEvents = 'none';
-        
-        // Check cache
-        var cached = prefetchCache[href];
-        if (cached && cached.isFakeFirstPage !== null) {
-            // Already have result
-            window.location.href = cached.isFakeFirstPage ? '/' : href;
-        } else if (cached && cached.promise) {
-            // Prefetch in progress, wait for it
-            cached.promise.then(function(isFake) {
-                window.location.href = isFake ? '/' : href;
+        // 0. AUTO YEAR
+        var yearSpan = document.getElementById("year");
+        if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+        // 1. MOBILE MENU SYNC & LOGIC
+        var navLinks = document.querySelector('.nav-links');
+        var mobileNav = document.getElementById('mobileNav');
+        if(navLinks && mobileNav) {
+            mobileNav.innerHTML = navLinks.innerHTML;
+            
+            // Mobile Dropdown Toggle
+            mobileNav.addEventListener('click', function(e) {
+                var target = e.target.closest('a');
+                if(!target) return;
+                var parent = target.parentElement;
+                if(parent && parent.classList.contains('nav-item-dropdown')) {
+                    e.preventDefault();
+                    parent.classList.toggle('expanded');
+                }
             });
-        } else {
-            // No prefetch (shouldn't happen), fetch now
-            fetch(href)
-                .then(function(r) { return r.text(); })
-                .then(function(html) {
-                    var parser = new DOMParser();
-                    var doc = parser.parseFromString(html, 'text/html');
-                    var newerOnDest = doc.querySelector('.prev-page-link');
-                    if (newerOnDest) {
-                        var destHref = newerOnDest.getAttribute('href');
-                        if (destHref === '/' || (destHref && destHref.match(/^https?:\/\/[^\/]+\/?$/))) {
-                            window.location.href = '/';
-                            return;
-                        }
-                    }
-                    window.location.href = href;
-                })
-                .catch(function() { window.location.href = href; });
         }
-    });
-})();
 
-//AUTO YEAR DETECTION
-// Mengambil tahun saat ini
-const year = new Date().getFullYear();
-// Memasukkannya ke dalam span dengan id "year"
-document.getElementById("year").textContent = year;
-
-// 1. MOBILE MENU & SEARCH
-function toggleMenu() {
-    var nav = document.getElementById('mobileNav');
-    var btn = document.getElementById('menuBtn');
-    nav.classList.toggle('active');
-    btn.classList.toggle('active');
-}
-function toggleSearch() {
-    var search = document.getElementById('searchBar');
-    search.classList.toggle('active');
-    if(search.classList.contains('active')) {
-        search.querySelector('input').focus();
-    }
-}
-
-// 1.5 PAGINATION FIX REMOVED (Native setting used)
-
-// 2. SMART RANDOM RELATED POSTS
-(function() {
-    var container = document.getElementById('related-posts-container');
-    // Assuming relatedLabels is defined in the template (see below) or we extract it here if possible.
-    // Ideally, we print the labels array in the HTML.
-    // Let's rely on a global variable 'relatedLabels' populated via Liquid/Blogger tags before this script runs.
-    if (!container || typeof relatedLabels === 'undefined' || relatedLabels.length === 0) return;
-
-    // 1. Pick a Random Label from the list
-    var randomLabel = relatedLabels[Math.floor(Math.random() * relatedLabels.length)];
-    
-    // 2. Shuffle Array Helper
-    function shuffleArray(array) {
-        for (var i = array.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
-        return array;
-    }
-
-    var maxPosts = 3;
-    // Fetch more than needed to allow for good randomization (e.g., 8)
-    var fetchCount = 8; 
-    
-    var html = '<div class="related-posts-wrap"><h3 class="related-title">You might also like</h3><div class="related-grid">';
-    
-    var script = document.createElement('script');
-    var endpoint = '/feeds/posts/default/-/' + encodeURIComponent(randomLabel);
-    script.src = endpoint + '?alt=json-in-script&callback=renderRelated&max-results=' + fetchCount; 
-    document.body.appendChild(script);
-
-    window.renderRelated = function(json) {
-        var entry = json.feed.entry;
-        if (entry) {
-            // 3. Filter out current post (if currentPostId is available) & Shuffle
-            // We need currentPostId. We can get it from 'data:post.id' in XML or DOM.
-            // Let's assume currentPostId is defined globally, or we just rely on ID comparison if available.
-            // If not, we just shuffle.
+        // 2. RELATED POSTS (Smart Random)
+        var relatedContainer = document.getElementById('related-posts-container');
+        if (relatedContainer && typeof relatedLabels !== 'undefined' && relatedLabels.length > 0) {
+            var randomLabel = relatedLabels[Math.floor(Math.random() * relatedLabels.length)];
+            var maxPosts = 3; 
+            var fetchCount = 8; // Fetch more for variety
             
-            // Shuffle first
-            shuffleArray(entry);
-            
-            var count = 0;
-            for (var i = 0; i < entry.length; i++) {
-                if (count >= maxPosts) break;
-                var post = entry[i];
-                var id = post.id.$t.split('post-')[1];
-                
-                // Skip if it's the current post (using global currentPostId if exists)
-                if (typeof currentPostId !== 'undefined' && id === currentPostId) continue;
-                
-                var title = post.title.$t;
-                var link = '';
-                for (var k = 0; k < post.link.length; k++) {
-                    if (post.link[k].rel == 'alternate') { link = post.link[k].href; break; }
+            // Shuffle Helper
+            function shuffle(array) {
+                for (var i = array.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var t = array[i]; array[i] = array[j]; array[j] = t;
                 }
+                return array;
+            }
+
+            var script = document.createElement('script');
+            script.src = '/feeds/posts/default/-/' + encodeURIComponent(randomLabel) + '?alt=json-in-script&callback=renderRelated&max-results=' + fetchCount;
+            document.body.appendChild(script);
+
+            window.renderRelated = function(json) {
+                var entry = json.feed.entry;
+                if (!entry) return;
                 
-                var thumb = '';
-                var thumbHtml = '';
-                if (post.media$thumbnail) {
-                    thumb = post.media$thumbnail.url.replace('/s72-c/', '/w600-h338-p-k-no-nu/');
-                    thumbHtml = '<img src="' + thumb + '" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>';
-                } else {
-                    thumbHtml = '<div style="width:100%;height:100%;background:#f1f3f4;display:flex;align-items:center;justify-content:center;color:#bdc1c6;"><svg style="width:48px" viewBox="0 0 24 24"><path d="M18 13v7H4V6h5.02c.05-.71.22-1.38.48-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5l-2-2zm-1.5 5h-11l3.5-4.5 2.5 3.01L14.5 12l2 2.68z" fill="currentColor"></path></svg></div>';
+                shuffle(entry);
+                var html = '<div class="related-posts-wrap"><h3 class="related-title">You might also like</h3><div class="related-grid">';
+                var count = 0;
+                
+                entry.forEach(function(post) {
+                    if (count >= maxPosts) return;
+                    var id = post.id.$t.split('post-')[1];
+                    if (typeof currentPostId !== 'undefined' && id === currentPostId) return; // Skip current
+                    
+                    var link = post.link.find(l => l.rel === 'alternate').href;
+                    var title = post.title.$t;
+                                        var thumb = post.media$thumbnail ? post.media$thumbnail.url.replace(/\/[sw]\d+[^\/]*\//, '/w800/') : '';
+                    var thumbHtml = thumb ? '<img src="' + thumb + '" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>' : '<div style="width:100%;height:100%;background:#f1f3f4;display:flex;align-items:center;justify-content:center;color:#bdc1c6;"><svg style="width:48px" viewBox="0 0 24 24"><path d="M18 13v7H4V6h5.02c.05-.71.22-1.38.48-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5l-2-2zm-1.5 5h-11l3.5-4.5 2.5 3.01L14.5 12l2 2.68z" fill="currentColor"></path></svg></div>';
+                    
+                    html += '<div class="related-card"><a href="' + link + '"><div class="related-thumb">' + thumbHtml + '</div><h4>' + title + '</h4></a></div>';
+                    count++;
+                });
+
+                if (count > 0) {
+                    html += '</div></div>';
+                    relatedContainer.innerHTML = html;
                 }
-                
-                html += '<div class="related-card">';
-                html += '<a href="' + link + '"><div class="related-thumb">' + thumbHtml + '</div>';
-                html += '<h4>' + title + '</h4></a>';
-                html += '</div>';
-                count++;
-            }
-            if (count > 0) {
-                html += '</div></div>';
-                container.innerHTML = html;
-            }
+            };
         }
-    };
-})();
 
+        // 3. HIGH-RES IMAGE UPGRADE (Single Post Only)
+        // Upgrades Blogger image URLs from limited sizes (s200, s320, s400, s640, etc) to s1600 for crisp display
+        document.querySelectorAll('.sp-body img').forEach(function(img) {
+            var src = img.src || img.getAttribute('src');
+            if (src && (src.includes('blogger.googleusercontent.com') || src.includes('bp.blogspot.com'))) {
+                // Pattern: /s640/, /s400-c/, /w640-h480/, etc.
+                var upgraded = src.replace(/\/s\d+(-c)?(-rw)?(-e\d+)?(-no)?\//, '/s1600/')
+                                  .replace(/\/w\d+-h\d+(-[a-z0-9]+)*\//, '/s1600/');
+                if (upgraded !== src) {
+                    img.src = upgraded;
+                }
+            }
+        });
 
-    // 3. AUTO-CAPTION FROM IMAGE TITLE
-    (function() {
-        var imgs = document.querySelectorAll('.sp-body img');
-        imgs.forEach(function(img) {
+        // 4. AUTO CAPTION
+        document.querySelectorAll('.sp-body img').forEach(function(img) {
             var title = img.getAttribute('title');
             if (title && title.trim() !== '') {
-                // Check if already has caption
                 var parent = img.parentElement;
-                // Blogger usually wraps in 'a' then 'div.separator' or directly 'div.separator'
-                // We want to avoid double captioning if .tr-caption-container already exists
-                if (parent.closest('.tr-caption-container')) return;
-                
-                // Create Caption
-                var caption = document.createElement('div');
-                caption.className = 'tr-caption';
-                caption.textContent = title;
-                
-                // Insert after image (or its link wrapper)
-                if (parent.tagName === 'A') {
-                    parent.after(caption);
-                } else {
-                    img.after(caption);
+                if (!parent.closest('.tr-caption-container')) {
+                    var caption = document.createElement('div');
+                    caption.className = 'tr-caption';
+                    caption.textContent = title;
+                    if (parent.tagName === 'A') parent.after(caption);
+                    else img.after(caption);
                 }
             }
         });
+
+        // 5. IMAGE LIGHTBOX (Premium Preview)
+        (function() {
+            // Create lightbox container
+            var lightbox = document.createElement('div');
+            lightbox.className = 'lightbox';
+            lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button><img class="lightbox-img" alt="Preview"/><span class="lightbox-hint">Press ESC or click anywhere to close</span>';
+            document.body.appendChild(lightbox);
+            
+            var lightboxImg = lightbox.querySelector('.lightbox-img');
+            
+            // Attach click handlers to post images
+            document.querySelectorAll('.sp-body img').forEach(function(img) {
+                // Skip if image is inside a link that goes to external URL
+                var parentLink = img.closest('a');
+                if (parentLink) {
+                    var href = parentLink.getAttribute('href') || '';
+                    // If it's a direct image link (common pattern), intercept
+                    if (href.includes('blogger.googleusercontent.com') || href.includes('bp.blogspot.com') || href.includes('.jpg') || href.includes('.png') || href.includes('.webp')) {
+                        parentLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            openLightbox(img);
+                        });
+                    }
+                    return; // Don't add extra listener
+                }
+                
+                img.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openLightbox(img);
+                });
+            });
+            
+            function openLightbox(img) {
+                // Get highest resolution version
+                var src = img.src
+                    .replace(/\/s\d+[^\/]*\//, '/s1600/')
+                    .replace(/\/w\d+[^\/]*\//, '/s1600/')
+                    .replace(/=s\d+[^&]*/, '=s1600')
+                    .replace(/=w\d+[^&]*/, '=s1600');
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Close handlers
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox || e.target.closest('.lightbox-close')) {
+                    closeLightbox();
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+        })();
+
+        // 4. ADMIN & AUTHOR CHECK
+        // Admin Check (CSS Probe Method)
+        (function() {
+            var blogId = "<data:blog.blogId/>"; // Server-side preferred
+            if (!blogId) {
+                 // Client-side fallback logic omitted for brevity/speed as server side usually works
+            }
+            if(blogId) {
+                var testDiv = document.createElement('div');
+                var testClass = 'admin-check-' + Date.now();
+                testDiv.className = testClass + ' blog-admin';
+                testDiv.innerHTML = '<style>.' + testClass + '{display:none}</style>';
+                document.body.appendChild(testDiv);
+                
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://www.blogger.com/dyn-css/authorization.css?targetBlogID=' + blogId;
+                link.onload = function() {
+                    if (window.getComputedStyle(testDiv).display === 'block') {
+                        document.body.classList.add('is-admin');
+                    }
+                    testDiv.remove();
+                };
+                document.head.appendChild(link);
+            }
+        })();
+
+        // Author Badge (Profile Match)
+        var authorEl = document.querySelector('.author-name[data-author-url]');
+        if (authorEl) {
+            var url = authorEl.getAttribute('data-author-url');
+            document.querySelectorAll('.comment[data-author-url="' + url + '"]').forEach(c => c.classList.add('blog-author'));
+        }
+
+    });
+
+    // GLOBAL FUNCTIONS (Exposed for HTML Event Handlers)
+    window.toggleMenu = function() {
+        document.getElementById('mobileNav').classList.toggle('active');
+        document.getElementById('menuBtn').classList.toggle('active');
+    };
+    
+    window.toggleSearch = function() {
+        var s = document.getElementById('searchBar');
+        s.classList.toggle('active');
+        if(s.classList.contains('active')) s.querySelector('input').focus();
+    };
+
+    window.moveReplyForm = function(cId) {
+        var form = document.getElementById('custom-comment-form');
+        var target = document.getElementById('c' + cId);
+        var starter = target.querySelector('.comment-starter') || target;
+        var replies = starter.querySelector('.comment-replies');
+        
+        if(replies) starter.insertBefore(form, replies);
+        else starter.appendChild(form);
+        
+        var iframe = form.querySelector('iframe');
+        iframe.src = iframe.src.split('&parentID')[0] + '&parentID=' + cId;
+        form.querySelector('.btn-cancel').style.display = 'inline-block';
+    };
+
+    window.cancelReply = function() {
+        var form = document.getElementById('custom-comment-form');
+        document.getElementById('comments').appendChild(form);
+        var iframe = form.querySelector('iframe');
+        iframe.src = iframe.src.split('&parentID')[0];
+        form.querySelector('.btn-cancel').style.display = 'none';
+    };
+    
+    // Reading Time Estimation
+    (function() {
+        var readingTimeEl = document.getElementById('reading-time');
+        var postBody = document.querySelector('.sp-body');
+        if (readingTimeEl && postBody) {
+            var text = postBody.textContent || postBody.innerText;
+            var wordCount = text.trim().split(/\s+/).length;
+            var readingTime = Math.ceil(wordCount / 200); // 200 words per minute
+            readingTimeEl.textContent = readingTime + ' menit baca';
+        }
     })();
-    
-// 4. REPLY MOVING LOGIC
-window.moveReplyForm = function(commentId) {
-    var form = document.getElementById('custom-comment-form'); 
-    var targetParam = '&parentID=' + commentId;
-    var iframe = form.querySelector('iframe');
-    
-    var targetComment = document.getElementById('c' + commentId);
-    var starter = targetComment.querySelector('.comment-starter') || targetComment;
-    
-    var replies = starter.querySelector('.comment-replies');
-    if(replies) {
-        starter.insertBefore(form, replies);
-    } else {
-        starter.appendChild(form);
-    }
-    
-    var src = iframe.src;
-    var baseUrl = src.split('\u0026parentID')[0]; 
-    iframe.src = ''; 
-    iframe.src = baseUrl + targetParam;
-    
-    form.querySelector('.btn-cancel').style.display = 'inline-block';
-};
-
-window.cancelReply = function() {
-     var form = document.getElementById('custom-comment-form');
-     var mainC = document.getElementById('comments');
-     mainC.appendChild(form); 
-     
-     var iframe = form.querySelector('iframe');
-     var baseUrl = iframe.src.split('\u0026parentID')[0];
-     iframe.src = baseUrl; 
-     
-     form.querySelector('.btn-cancel').style.display = 'none';
-};
-
-document.addEventListener('click', function(e){
-     if(e.target.classList.contains('btn-cancel')) {
-         e.preventDefault();
-         window.cancelReply();
-     }
-});
-
-// ADMIN DETECTION via Blogger Authorization CSS (Plus UI Method)
-(function() {
-    // This unique class is used for the test element
-    var testClass = 'admin-check-' + Date.now();
-    var blogId = document.querySelector('meta[name="generator"]') ? '' : '';
-    // Try to extract blogId from head meta or from script data
-    try {
-        var scripts = document.querySelectorAll('script');
-        for (var i = 0; i < scripts.length; i++) {
-            var txt = scripts[i].textContent || '';
-            var m = txt.match(/blogId['"]?\s*[:=]\s*['"]?(\d{15,22})/i);
-            if (m && m[1]) { blogId = m[1]; break; }
-        }
-    } catch (e) {}
-    
-    // Fallback: Try to get from URL or common patterns
-    if (!blogId) {
-        var match = location.hostname.match(/([a-z0-9-]+)\.blogspot\./i);
-        if (match) {
-            // We cannot determine blogId from hostname, but the CSS request will work anyway
-            // since we're on the Blogger domain and auth cookies are sent
-        }
-    }
-    
-    // Fallback: Get from data in the page
-    var dataScript = document.getElementById('json:data');
-    if (dataScript) {
-        try {
-            var d = JSON.parse(dataScript.textContent);
-            if (d && d.bg && d.bg.bgId) blogId = d.bg.bgId;
-        } catch (e) {}
-    }
-    
-    // Final fallback: Search for blogID in page links
-    if (!blogId) {
-        var links = document.querySelectorAll('a[href*="blogID="]');
-        for (var i = 0; i < links.length; i++) {
-            var href = links[i].href;
-            var m = href.match(/blogID=(\d+)/i);
-            if (m && m[1]) { blogId = m[1]; break; }
-        }
-    }
-    
-    // If still no blogId, try postEditUrl
-    if (!blogId) {
-        var editLink = document.querySelector('a[href*="/post/edit/"]');
-        if (editLink) {
-            var parts = editLink.href.split('/');
-            for (var i = 0; i < parts.length; i++) {
-                if (parts[i] === 'edit' && parts[i+1]) {
-                    blogId = parts[i+1];
-                    break;
-                }
-            }
-        }
-    }
-    
-    if (blogId) {
-        // Create test element
-        var testDiv = document.createElement('div');
-        testDiv.className = testClass + ' blog-admin';
-        testDiv.innerHTML = '<style>.' + testClass + '{display:none}</style>';
-        document.body.appendChild(testDiv);
-        
-        // Load Blogger's authorization CSS which shows .blog-admin only for admins
-        var authCss = document.createElement('link');
-        authCss.rel = 'stylesheet';
-        authCss.href = 'https://www.blogger.com/dyn-css/authorization.css?targetBlogID=' + blogId;
-        
-        authCss.onload = function() {
-            // After loading, check if our test element became visible
-            var style = window.getComputedStyle(testDiv);
-            if (style.display === 'block') {
-                document.documentElement.classList.add('iAd');
-                document.body.classList.add('is-admin');
-            } else {
-            }
-            testDiv.remove();
-        };
-        
-        authCss.onerror = function() {
-            testDiv.remove();
-        };
-        document.head.appendChild(authCss);
-    } else {
-        console.log('⚠️ blogId not found');
-    }
-})();
-
-// AUTHOR BADGE: Mark comments from blog author (using profile URL for accuracy)
-(function() {
-    // Get blog/post author profile URL from the page
-    var postAuthorUrl = '';
-    var authorNameEl = document.querySelector('.author-name[data-author-url]');
-    if (authorNameEl) {
-        postAuthorUrl = authorNameEl.getAttribute('data-author-url');
-    }
-    if (postAuthorUrl) {
-        // Mark all comments from the blog author by comparing profile URLs
-        var comments = document.querySelectorAll('.comment[data-author-url]');
-        comments.forEach(function(comment) {
-            var commentAuthorUrl = comment.getAttribute('data-author-url');
-            if (commentAuthorUrl && commentAuthorUrl === postAuthorUrl) {
-                comment.classList.add('blog-author');
-            }
-        });
-    }
-})();
-
-// HIGH-RES IMAGE UPGRADE (Single Post Only)
-// Upgrades Blogger image URLs from limited sizes (s200, s320, s400, s640, etc) to s1600 for crisp display
-document.querySelectorAll('.sp-body img').forEach(function(img) {
-    var src = img.src || img.getAttribute('src');
-    if (src && (src.includes('blogger.googleusercontent.com') || src.includes('bp.blogspot.com'))) {
-        var upgraded = src.replace(/\/s\d+(-c)?(-rw)?(-e\d+)?(-no)?\//, '/s1600/')
-                          .replace(/\/w\d+-h\d+(-[a-z0-9]+)*\//, '/s1600/');
-        if (upgraded !== src) {
-            img.src = upgraded;
-        }
-    }
-});
-
-// Reading Time Estimation
-(function() {
-    var readingTimeEl = document.getElementById('reading-time');
-    var postBody = document.querySelector('.sp-body');
-    if (readingTimeEl && postBody) {
-        var text = postBody.textContent || postBody.innerText;
-        var wordCount = text.trim().split(/\s+/).length;
-        var readingTime = Math.ceil(wordCount / 200); // 200 words per minute
-        readingTimeEl.textContent = readingTime + ' min read';
-    }
-})();
-//]]>
+    //]]>
 </script>
 
 <!-- Back to Top Button -->
@@ -2639,6 +3048,53 @@ document.querySelectorAll('.sp-body img').forEach(function(img) {
             btn.classList.add('visible');
         } else {
             btn.classList.remove('visible');
+        }
+    });
+})();
+//]]>
+</script>
+
+<!-- Skeleton Loading Overlay -->
+<div class='skeleton-overlay' id='skeletonOverlay'>
+    <div class='skeleton-container'>
+        <div class='skeleton-bar skeleton-breadcrumb'/>
+        <div class='skeleton-bar skeleton-title'/>
+        <div class='skeleton-bar skeleton-title-2'/>
+        <div class='skeleton-bar skeleton-meta'/>
+        <div class='skeleton-bar skeleton-image'/>
+        <div class='skeleton-bar skeleton-line'/>
+        <div class='skeleton-bar skeleton-line'/>
+        <div class='skeleton-bar skeleton-line'/>
+        <div class='skeleton-bar skeleton-line'/>
+        <div class='skeleton-bar skeleton-line'/>
+    </div>
+</div>
+<script>
+//<![CDATA[
+(function() {
+    var skeleton = document.getElementById('skeletonOverlay');
+    if (!skeleton) return;
+    
+    // Show skeleton on article link clicks
+    document.addEventListener('click', function(e) {
+        // Check for article links (post URLs contain year/month pattern)
+        var link = e.target.closest('a[href*="/20"]');
+        if (!link) return;
+        
+        var href = link.getAttribute('href');
+        // Only trigger for single post URLs (contains .html or year/month/title pattern)
+        if (href && (href.indexOf('.html') !== -1 || /\/\d{4}\/\d{2}\//.test(href))) {
+            // Don't trigger for same page anchors or external links
+            if (href.indexOf('#') === 0 || href.indexOf('http') === 0 && href.indexOf(window.location.hostname) === -1) return;
+            
+            skeleton.classList.add('active');
+        }
+    });
+    
+    // Hide skeleton when navigating back
+    window.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            skeleton.classList.remove('active');
         }
     });
 })();
